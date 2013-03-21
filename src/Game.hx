@@ -267,7 +267,8 @@ using Common;
 	function makeField(text,size=20) {
 		var tf = new TF();
 		var fmt = tf.defaultTextFormat;
-		fmt.font = "BmpFont";
+		//fmt.font = "BmpFont";
+		fmt.font = pazu.Assets.getFont("gfx/04B_03__.TTF").fontName;
 		fmt.size = size;
 		fmt.color = 0xFFFFFF;
 		tf.defaultTextFormat = fmt;
@@ -279,7 +280,8 @@ using Common;
 		tf.autoSize = flash.text.TextFieldAutoSize.LEFT;
 		tf.width = 0;
 		tf.height = 20;
-		tf.htmlText = text;
+		//tf.htmlText = text;
+		tf.text = text;
 		return tf;
 	}
 	
