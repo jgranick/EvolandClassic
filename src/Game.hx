@@ -651,13 +651,13 @@ using Common;
 			var b = 15;
 			var f = (0.25 / g) * curColor.rgb;
 			var k = 1 - curColor.rgb;
-			var curFilter = new flash.filters.ColorMatrixFilter([
+			/*var curFilter = new flash.filters.ColorMatrixFilter([
 				k + r*f, r*f, r*f, 0, 20 * curColor.rgb,
 				g*f, k + g*f, g*f, 0, 50 * curColor.rgb,
 				b*f, b*f, k + b*f, 0, 20 * curColor.rgb,
 				0,0,0,1,0,
 			]);
-			output.applyFilter(output, output.rect, new flash.geom.Point(0, 0), curFilter);
+			output.applyFilter(output, output.rect, new flash.geom.Point(0, 0), curFilter);*/
 		}
 		
 		if( curColor.alpha > 0.01 )
@@ -724,10 +724,10 @@ using Common;
 		inst = new Game(flash.Lib.current);
 		inst.root.addEventListener(flash.events.Event.ENTER_FRAME, function(_) inst.update());
 		var url = inst.root.loaderInfo.url;
-		if( StringTools.startsWith(url, "http://evoland.shirogames.com/") || StringTools.startsWith(url, "http://evoland.shiro.fr/") || StringTools.startsWith(url, "file://") ) {
+		//if( StringTools.startsWith(url, "http://evoland.shirogames.com/") || StringTools.startsWith(url, "http://evoland.shiro.fr/") || StringTools.startsWith(url, "file://") ) {
 			Key.init();
 			var title = new Title(inst);
-		}
+		//}
 	}
 	
 }
