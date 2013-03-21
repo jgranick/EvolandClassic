@@ -289,6 +289,7 @@ using Common;
 			pixelFilter.fillRect(pixelFilter.rect, 0);
 		else
 			pixelFilter = new BMP(output.width, output.height, true, 0);
+			pixelFilter.lock();
 		for( x in 0...Std.int(output.width / k) )
 			for( y in 0...Std.int(output.height / k) ) {
 				var x = x * k, y = y * k;
@@ -298,6 +299,7 @@ using Common;
 					pixelFilter.setPixel32(x, y + i, 0x20000000);
 				}
 			}
+			pixelFilter.unlock();
 	}
 	
 	function doShake() {
