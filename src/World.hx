@@ -116,17 +116,18 @@ class World {
 		var b = t[x][y];
 		return switch( b ) {
 		case Dark, Tree, Bush, Rock, SavePoint, Cactus, Lock, Free, Door, Dungeon, FakeTree:
-			if( rec ) return null;
 			var cur : Block = null;
-			var s = getSoil(x, y - 1, true);
-			if( cur == null || (s != null && Type.enumIndex(s) < Type.enumIndex(cur)) ) cur = s;
-			var s = getSoil(x, y + 1, true);
-			if( cur == null || (s != null && Type.enumIndex(s) < Type.enumIndex(cur)) ) cur = s;
-			var s = getSoil(x - 1, y, true);
-			if( cur == null || (s != null && Type.enumIndex(s) < Type.enumIndex(cur)) ) cur = s;
-			var s = getSoil(x + 1, y, true);
-			if( cur == null || (s != null && Type.enumIndex(s) < Type.enumIndex(cur)) ) cur = s;
-			if( cur == null ) cur = Field;
+			if ( !rec ) {
+				var s = getSoil(x, y - 1, true);
+				if( cur == null || (s != null && Type.enumIndex(s) < Type.enumIndex(cur)) ) cur = s;
+				var s = getSoil(x, y + 1, true);
+				if( cur == null || (s != null && Type.enumIndex(s) < Type.enumIndex(cur)) ) cur = s;
+				var s = getSoil(x - 1, y, true);
+				if( cur == null || (s != null && Type.enumIndex(s) < Type.enumIndex(cur)) ) cur = s;
+				var s = getSoil(x + 1, y, true);
+				if( cur == null || (s != null && Type.enumIndex(s) < Type.enumIndex(cur)) ) cur = s;
+				if ( cur == null ) cur = Field;
+			}
 			cur;
 		case BridgeLR, BridgeUD, Water:
 			if( rec ) null else Water;

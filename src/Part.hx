@@ -61,7 +61,7 @@ class Part {
 	}
 	
 	static var all = new Array<Part>();
-	static var PIXELS = new IntHash();
+	static var PIXELS = new Map();
 	public static function getColorPixel( c : Int ) {
 		var p = PIXELS.get(c);
 		if( p == null ) {

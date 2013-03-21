@@ -6,7 +6,7 @@ typedef TF = flash.text.TextField;
 
 typedef K = flash.ui.Keyboard;
 
-class Const implements haxe.Public {
+@:publicFields class Const {
 
 	static inline var SIZE = 16;
 

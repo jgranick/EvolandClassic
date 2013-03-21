@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+	
+	<meta title="Evoland" package="fr.ncannasse.evoland" version="1.0.0" company="Nicolas Cannasse" />
+	<app path="bin" main="Game" />
+	
+	<window width="600" height="408" fps="40" background="0x000000" />
+	
+	<source path="src" />
+	<source path="lib" />
+	<source path="gfx" />
+	<source path="sfx" />
+	
+	<haxelib name="pazu" />
+	
+	<assets path="music1.mp3" />
+	
+</project>

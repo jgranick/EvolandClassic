@@ -1,6 +1,6 @@
 using Common;
 
-class Game implements haxe.Public {
+@:publicFields class Game {
 	
 	var root : SPR;
 	var view : SPR;
@@ -116,7 +116,7 @@ class Game implements haxe.Public {
 		dm = new DepthManager(scroll.mc);
 		view.addChild(scroll.mc);
 		
-		var hchests = new IntHash();
+		var hchests = new Map();
 		for( c in props.chests )
 			hchests.set(c, true);
 		for( c in world.chests )
@@ -194,7 +194,7 @@ class Game implements haxe.Public {
 		else
 			world = realWorld;
 			
-		var hchests = new IntHash();
+		var hchests = new Map();
 		for( c in props.chests )
 			hchests.set(c, true);
 		for( c in world.chests )

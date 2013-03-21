@@ -15,8 +15,8 @@ class Key {
 		fl_initDone = true;
 		
 		
-		stage.addEventListener(flash.events.KeyboardEvent.KEY_DOWN,callback(onKey,true));
-		stage.addEventListener(flash.events.KeyboardEvent.KEY_UP,callback(onKey,false));
+		stage.addEventListener(flash.events.KeyboardEvent.KEY_DOWN,onKey.bind(true));
+		stage.addEventListener(flash.events.KeyboardEvent.KEY_UP,onKey.bind(false));
 		stage.addEventListener(flash.events.Event.DEACTIVATE,function(_) kcodes = new Array());
 		stage.addEventListener(flash.events.Event.ENTER_FRAME,onEnterFrame);
 	}
@@ -51,7 +51,7 @@ class Key {
 
 	public static function enableJSKeys(objName:String) {
 		try {
-			flash.external.ExternalInterface.addCallback("onKeyEvent",#if !flash9 null,#end event);
+			flash.external.ExternalInterface.addCallback("onKeyEvent",#if flash8 null,#end event);
 			var r : Null<Bool> = flash.external.ExternalInterface.call("function() { var fla = window.document['"+objName+"']; if( fla == null ) return false; document.onkeydown = function(e) { if( e == null ) e = window.event; fla.onKeyEvent(e.keyCode,true); }; document.onkeyup = function(e) { if( e == null ) e = window.event; fla.onKeyEvent(e.keyCode,false); }; return true; }");
 			if( r == null ) r = false;
 			return r;

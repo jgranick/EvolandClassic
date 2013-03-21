@@ -63,7 +63,7 @@ class Hit extends S {
 
 class Sounds {
 	
-	static var sounds = new Hash();
+	static var sounds = new Map();
 	
 	public static function play( name : String ) {
 		if( !Game.props.sounds )
