@@ -642,10 +642,12 @@ using Common;
 		} else
 			output.draw(view);
 		
+		#if !js
 		var delta = Std.int(curColor.delta);
 		var mask = Math.ceil(curColor.mask);
 		if( delta != 0 || mask != 0xFF )
 			applyMask(delta, mask);
+		#end
 
 		if( curColor.rgb > 0.01 ) {
 			var r = 155;
@@ -662,8 +664,10 @@ using Common;
 			output.applyFilter(output, output.rect, new flash.geom.Point(0, 0), curFilter);*/
 		}
 		
+		#if !js
 		if( curColor.alpha > 0.01 )
 			output.draw(pixelFilter, null, new flash.geom.ColorTransform(1, 1, 1, curColor.alpha));
+		#end
 			
 		if( generators != null )
 		for( g in generators ) {
