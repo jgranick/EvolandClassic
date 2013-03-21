@@ -1,5 +1,7 @@
 using Common;
 
+import flash.display.BitmapData;
+
 @:bitmap("sprites.png")
 class SpritesPNG extends BMP {
 }
@@ -21,7 +23,7 @@ enum EKind {
 class Entity
 {
 	
-	public static var sprites = Tiles.initTiles(new SpritesPNG(0, 0), 16);
+	public static var sprites : Array<Array<BitmapData>>;
 
 	public var kind : EKind;
 	public var x : Float;
@@ -91,6 +93,12 @@ class Entity
 	
 	public function explode( p = 100 ) {
 		Part.explode(bmp.bitmapData, Std.int(mc.x), Std.int(mc.y), p);
+	}
+	
+	public static function init() {
+		if ( sprites == null ) {
+			sprites = Tiles.initTiles(new SpritesPNG(0, 0), 16);
+		}
 	}
 	
 	function updatePos(dt:Float) {
