@@ -89,7 +89,7 @@ using Common;
 		
 		var purl = root.loaderInfo.url.split("/");
 		purl.pop();
-		var murl = purl.join("/") + "/music1.mp3";
+		var murl = (purl.length > 0 ? purl.join("/") + "/" : "") + "music1.mp3";
 		music = new flash.media.Sound(new flash.net.URLRequest(murl));
 		
 		monsters = [];
