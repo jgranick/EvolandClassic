@@ -1,3 +1,4 @@
+import flash.geom.Rectangle;
 using Common;
 
 @:bitmap("world.png") class WorldPNG extends BMP {
@@ -148,7 +149,11 @@ class World {
 		removed[x][y] = true;
 		Game.props.rem.push(x + (y + (Game.props.dungeon?SIZE:0)) * SIZE);
 		Sounds.play("open");
-		draw();
+		//draw();
+		bmp.fillRect (new Rectangle(x * Const.SIZE, y * Const.SIZE, Const.SIZE, Const.SIZE), 0xFF000000);
+		drawPos(x, y, false);
+		drawPos(x, y, true);
+		
 		var b = removedBitmaps[x][y];
 		if( b != null )
 			Part.explode(b, x * Const.SIZE, y * Const.SIZE);
@@ -166,68 +171,83 @@ class World {
 	
 	public function draw() {
 		var t0 = flash.Lib.getTimer();
+		bmp.lock();
 		bmp.fillRect(bmp.rect, 0xFF000000);
 		rnd = new Rand(42);
 		details = false;
 		for( x in 0...SIZE )
 			for( y in 0...SIZE ) {
-				var b = getSoil(x, y);
-				if( b == null ) continue;
-				putBlock(x, y, b);
-				switch( b ) {
-				case Water:
-					switch( getSoil(x,y-1) ) {
-					case Water:
-					case Sand:
-						putSingle(x, y, SandBank, 0);
-					default:
-						putSingle(x, y, RiverBank, 0);
-					}
-					var s;
-					if( (s=getSoil(x+1,y)) != Water )
-						putSingle(x, y, s == Sand ? SandBank : RiverBank, 1);
-					if( (s=getSoil(x-1,y)) != Water )
-						putSingle(x, y, s == Sand ? SandBank : RiverBank, 2);
-				case Field:
-					if( getSoil(x,y-1) == Sand )
-						putSingle(x, y, SandBank, 0);
-					if( getSoil(x+1,y) == Sand )
-						putSingle(x, y, SandBank, 1);
-					if( getSoil(x-1,y) == Sand )
-						putSingle(x, y, SandBank, 2);
-					if( getSoil(x,y+1) == Sand )
-						putSingle(x, y, SandBank, 3);
-				default:
-				}
+				drawPos(x, y, details);
 			}
 		details = true;
 		for( x in 0...SIZE )
 			for( y in 0...SIZE ) {
-				var b = t[x][y];
-				switch( b ) {
-				case Field:
-					if( rnd.random(3) == 0 )
-						putBlock(x, y, Detail, rnd.random(7) - 3, -rnd.random(4));
-				case Sand:
-					if( rnd.random(3) == 0 )
-						putBlock(x, y, SandDetail, rnd.random(7) - 3, -rnd.random(4));
-				case Tree:
-					putBlock(x, y, b, rnd.random(5) - 2, -rnd.random(3), 0, true);
-				case Rock, Bush:
-					putBlock(x, y, b, rnd.random(5) - 2, -rnd.random(3), 0);
-				case Cactus:
-					putBlock(x, y, b, rnd.random(5) - 2, -rnd.random(3), 1);
-				case Dark:
-					if( rnd.random(3) == 0 )
-						putBlock(x, y, Tree, rnd.random(5) - 2, rnd.random(2), 0, true);
-				case DungeonExit:
-					putBlock(x, y, DungeonStairs);
-				case BridgeLR, BridgeUD, SavePoint, Door, Dungeon, DungeonStat,DungeonStairs, DungeonWall, DungeonFakeWall,DungeonPuzzle,MonsterGenerator,FakeTree:
-					putBlock(x, y, b);
-				default:
-				}
+				drawPos(x, y, details);
 			}
+		bmp.unlock();
 		//trace(flash.Lib.getTimer() - t0);
+		//js.Lib.alert(flash.Lib.getTimer() - t0);
+	}
+	
+	function drawPos(x, y, details) {
+		
+		if (!details) {
+			var b = getSoil(x, y);
+			if( b == null ) return;
+			putBlock(x, y, b);
+			switch( b ) {
+			case Water:
+				switch( getSoil(x,y-1) ) {
+				case Water:
+				case Sand:
+					putSingle(x, y, SandBank, 0);
+				default:
+					putSingle(x, y, RiverBank, 0);
+				}
+				var s;
+				if( (s=getSoil(x+1,y)) != Water )
+					putSingle(x, y, s == Sand ? SandBank : RiverBank, 1);
+				if( (s=getSoil(x-1,y)) != Water )
+					putSingle(x, y, s == Sand ? SandBank : RiverBank, 2);
+			case Field:
+				if( getSoil(x,y-1) == Sand )
+					putSingle(x, y, SandBank, 0);
+				if( getSoil(x+1,y) == Sand )
+					putSingle(x, y, SandBank, 1);
+				if( getSoil(x-1,y) == Sand )
+					putSingle(x, y, SandBank, 2);
+				if( getSoil(x,y+1) == Sand )
+					putSingle(x, y, SandBank, 3);
+			default:
+			}
+			
+		} else {
+			
+			var b = t[x][y];
+			switch( b ) {
+			case Field:
+				if( rnd.random(3) == 0 )
+					putBlock(x, y, Detail, rnd.random(7) - 3, -rnd.random(4));
+			case Sand:
+				if( rnd.random(3) == 0 )
+					putBlock(x, y, SandDetail, rnd.random(7) - 3, -rnd.random(4));
+			case Tree:
+				putBlock(x, y, b, rnd.random(5) - 2, -rnd.random(3), 0, true);
+			case Rock, Bush:
+				putBlock(x, y, b, rnd.random(5) - 2, -rnd.random(3), 0);
+			case Cactus:
+				putBlock(x, y, b, rnd.random(5) - 2, -rnd.random(3), 1);
+			case Dark:
+				if( rnd.random(3) == 0 )
+					putBlock(x, y, Tree, rnd.random(5) - 2, rnd.random(2), 0, true);
+			case DungeonExit:
+				putBlock(x, y, DungeonStairs);
+			case BridgeLR, BridgeUD, SavePoint, Door, Dungeon, DungeonStat,DungeonStairs, DungeonWall, DungeonFakeWall,DungeonPuzzle,MonsterGenerator,FakeTree:
+				putBlock(x, y, b);
+			default:
+			}
+			
+		}
 	}
 	
 	function putSingle(x, y, b:Block, k : Int ) {
