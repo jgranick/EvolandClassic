@@ -715,7 +715,6 @@ using Common;
 			var b = 15;
 			var f = (0.25 / g) * curColor.rgb;
 			var k = 1 - curColor.rgb;
-			#if flash
 			var curFilter = new flash.filters.ColorMatrixFilter([
 				k + r*f, r*f, r*f, 0, 20 * curColor.rgb,
 				g*f, k + g*f, g*f, 0, 50 * curColor.rgb,
@@ -723,13 +722,10 @@ using Common;
 				0,0,0,1,0,
 			]);
 			output.applyFilter(output, output.rect, new flash.geom.Point(0, 0), curFilter);
-			#end
 		}
 		
-		//#if (!js && !mobile)
 		//if( curColor.alpha > 0.01 )
 			//output.draw(pixelFilter, null, new flash.geom.ColorTransform(1, 1, 1, curColor.alpha));
-		//#end
 		pixelFilterBMP.alpha = curColor.alpha;
 		
 		if( generators != null )
