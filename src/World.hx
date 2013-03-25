@@ -146,12 +146,14 @@ class World {
 	public function remove(x, y) {
 		if( removed[x][y] )
 			return false;
+		removed[x][y] = true;
 		Game.props.rem.push(x + (y + (Game.props.dungeon?SIZE:0)) * SIZE);
 		Sounds.play("open");
 		//draw();
-		bmp.fillRect (new Rectangle(x * Const.SIZE, y * Const.SIZE, Const.SIZE, Const.SIZE), 0xFF000000);
-		drawPos(x, y, false);
-		removed[x][y] = true;
+		details = false;
+		drawPos(x, y);
+		details = true;
+		drawPos(x, y);
 		
 		var b = removedBitmaps[x][y];
 		if( b != null )
@@ -176,20 +178,18 @@ class World {
 		details = false;
 		for( x in 0...SIZE )
 			for( y in 0...SIZE ) {
-				drawPos(x, y, details);
+				drawPos(x, y);
 			}
 		details = true;
 		for( x in 0...SIZE )
 			for( y in 0...SIZE ) {
-				drawPos(x, y, details);
+				drawPos(x, y);
 			}
 		bmp.unlock();
 		//trace(flash.Lib.getTimer() - t0);
-		//js.Lib.alert(flash.Lib.getTimer() - t0);
 	}
 	
-	function drawPos(x, y, details) {
-		
+	function drawPos(x, y) {
 		if (!details) {
 			var b = getSoil(x, y);
 			if( b == null ) return;
