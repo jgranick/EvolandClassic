@@ -1,5 +1,7 @@
 using Common;
 
+//@:font("04B_03__.TTF", "a-Z0-9") class DefaultFont extends flash.text.Font {}
+
 @:publicFields class Game {
 	
 	var root : SPR;
@@ -267,8 +269,11 @@ using Common;
 	function makeField(text,size=20) {
 		var tf = new TF();
 		var fmt = tf.defaultTextFormat;
-		//fmt.font = "BmpFont";
+		#if flash
+		fmt.font = "BmpFont";
+		#else
 		fmt.font = pazu.Assets.getFont("gfx/04B_03__.TTF").fontName;
+		#end;
 		fmt.size = size;
 		fmt.color = 0xFFFFFF;
 		tf.defaultTextFormat = fmt;
@@ -280,8 +285,11 @@ using Common;
 		tf.autoSize = flash.text.TextFieldAutoSize.LEFT;
 		tf.width = 0;
 		tf.height = 20;
-		//tf.htmlText = text;
+		#if js
 		tf.text = text;
+		#else
+		tf.htmlText = text;
+		#end
 		return tf;
 	}
 	
@@ -657,13 +665,15 @@ using Common;
 			var b = 15;
 			var f = (0.25 / g) * curColor.rgb;
 			var k = 1 - curColor.rgb;
-			/*var curFilter = new flash.filters.ColorMatrixFilter([
+			#if flash
+			var curFilter = new flash.filters.ColorMatrixFilter([
 				k + r*f, r*f, r*f, 0, 20 * curColor.rgb,
 				g*f, k + g*f, g*f, 0, 50 * curColor.rgb,
 				b*f, b*f, k + b*f, 0, 20 * curColor.rgb,
 				0,0,0,1,0,
 			]);
-			output.applyFilter(output, output.rect, new flash.geom.Point(0, 0), curFilter);*/
+			output.applyFilter(output, output.rect, new flash.geom.Point(0, 0), curFilter);
+			#end
 		}
 		
 		#if !js
@@ -737,6 +747,30 @@ using Common;
 			Entity.init();
 			var title = new Title(inst);
 		//}
+		
+		var widthScale = flash.Lib.current.stage.stageWidth / 600;
+		var heightScale = flash.Lib.current.stage.stageHeight / 408;
+		
+		if (widthScale < heightScale) {
+			
+			flash.Lib.current.scaleX = widthScale;
+			flash.Lib.current.scaleY = widthScale;
+			flash.Lib.current.x = (flash.Lib.current.stage.stageWidth - (600 * widthScale)) / 2;
+			
+		} else {
+			
+			flash.Lib.current.scaleX = heightScale;
+			flash.Lib.current.scaleY = heightScale;
+			flash.Lib.current.x = (flash.Lib.current.stage.stageWidth - (600 * heightScale)) / 2;
+			
+		}
+		
+		var bars = new flash.display.Sprite();
+		bars.graphics.beginFill (0);
+		bars.graphics.drawRect ( -400, 0, 400, 408);
+		bars.graphics.drawRect (600, 0, 400, 408);
+		flash.Lib.current.addChild (bars);
+		
 	}
 	
 }

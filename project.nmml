@@ -4,12 +4,15 @@
 	<meta title="Evoland" package="fr.ncannasse.evoland" version="1.0.0" company="Nicolas Cannasse" />
 	<app path="bin" main="Game" />
 	
-	<window width="600" height="408" fps="40" background="0x000000" />
+	<window width="600" height="408" fps="40" background="0x000000" orientation="landscape" />
+	<window width="0" height="0" if="mobile" />
 	
 	<source path="src" />
 	<source path="lib" />
 	<source path="gfx" />
 	<source path="sfx" />
+	
+	<haxeflag name="-swf-lib obj\ld24Resources.swf" if="flash" />
 	
 	<haxelib name="pazu" />
 	
