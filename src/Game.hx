@@ -550,18 +550,22 @@ using Common;
 		Part.updateAll(dt);
 		
 		var tap = false;
+		dir = null;
 		
 		if (mouseIsDown) {
-			var dX = root.mouseX - (Const.GAME_WIDTH / 2);
-			var dY = root.mouseY - (Const.GAME_HEIGHT / 2);
-			if ( Math.abs (dX + dY) > 10 ) {
-				if ( Math.abs (dX) > Math.abs (dY) ) {
+			var dX = root.mouseX - (((hero.x + 0.5) * Const.SIZE * z) - sx);
+			var dY = root.mouseY - (((hero.y + 0.5) * Const.SIZE * z) - sy);
+			var threshold = 30;
+			if ( Math.abs (dX) > Math.abs (dY) ) {
+				if ( Math.abs (dX) > threshold ) {
 					if ( dX < 0 ) {
 						dir = Direction.LEFT;
 					} else {
 						dir = Direction.RIGHT;
 					}
-				} else {
+				}
+			} else {
+				if ( Math.abs (dY) > threshold ) {
 					if ( dY < 0 ) {
 						dir = Direction.UP;
 					} else {
@@ -570,7 +574,6 @@ using Common;
 				}
 			}
 		} else {
-			dir = null;
 			tap = (flash.Lib.getTimer() - mouseIsDownTime < 180);
 		}
 		
