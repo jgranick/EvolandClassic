@@ -14,6 +14,7 @@ using Common;
 	var output : BMP;
 	var outputBMP : flash.display.Bitmap;
 	var pixelFilter : BMP;
+	var pixelFilterBMP : flash.display.Bitmap;
 	var dm : DepthManager;
 	
 	var entities : Array<Entity>;
@@ -108,6 +109,7 @@ using Common;
 		root.addChild(outputBMP);
 		
 		initPixelFilter(props.zoom);
+		root.addChild(pixelFilterBMP);
 		
 		world = new World(new World.WorldPNG(0, 0));
 		realWorld = world;
@@ -328,6 +330,7 @@ using Common;
 				}
 			}
 			pixelFilter.unlock();
+		pixelFilterBMP = new flash.display.Bitmap(pixelFilter);
 	}
 	
 	function doShake() {
@@ -723,11 +726,12 @@ using Common;
 			#end
 		}
 		
-		#if (!js && !mobile)
-		if( curColor.alpha > 0.01 )
-			output.draw(pixelFilter, null, new flash.geom.ColorTransform(1, 1, 1, curColor.alpha));
-		#end
-			
+		//#if (!js && !mobile)
+		//if( curColor.alpha > 0.01 )
+			//output.draw(pixelFilter, null, new flash.geom.ColorTransform(1, 1, 1, curColor.alpha));
+		//#end
+		pixelFilterBMP.alpha = curColor.alpha;
+		
 		if( generators != null )
 		for( g in generators ) {
 			var dx = hero.x - g.x;
