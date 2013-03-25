@@ -54,13 +54,19 @@ class Title {
 		var start = game.makeField("Start", 15);
 		start.x = 120;
 		start.y = 120;
+		start.addEventListener(flash.events.MouseEvent.MOUSE_DOWN, start_onClick);
+		start.mouseEnabled = true;
 		root.addChild(start);
 		
 		var cont = game.makeField("Continue", 15);
 		cont.x = 120;
 		cont.y = 140;
-		if( !game.hasSave() )
+		if( !game.hasSave() ) {
 			cont.textColor = 0x808080;
+		} else {
+			cont.mouseEnabled = true;
+			cont.addEventListener(flash.events.MouseEvent.MOUSE_DOWN, cont_onClick);
+		}
 		root.addChild(cont);
 		
 		var quote = game.makeField("A short story of adventure video games evolution", 10);
@@ -85,6 +91,16 @@ class Title {
 		update(null);
 	}
 	
+	function start_onClick(_) {
+		load = false;
+		start();
+	}
+	
+	function cont_onClick(_) {
+		load = true;
+		start();
+	}
+	
 	function update(_) {
 		for( k in [K.DOWN, K.UP, "Z".code, "W".code, "S".code] )
 			if( Key.isToggled(k) && game.hasSave() ) {
@@ -104,7 +120,7 @@ class Title {
 		cursor.y = 120 + (load ? 20 : 0);
 		for( k in ["E".code, K.ENTER, K.SPACE] )
 			if( Key.isToggled(k) ) {
-				haxe.Timer.delay(start,10);
+				haxe.Timer.delay(start, 10);
 				return;
 			}
 	}

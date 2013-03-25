@@ -33,6 +33,10 @@ using Common;
 	var circleSize : Float;
 	var mask : SPR;
 	
+	var dir : Direction;
+	var mouseIsDown : Bool;
+	var mouseIsDownTime : Int;
+	
 	static var has = {
 		monsters : false,
 		npc : false,
@@ -92,13 +96,14 @@ using Common;
 		var purl = root.loaderInfo.url.split("/");
 		purl.pop();
 		var murl = (purl.length > 0 ? purl.join("/") + "/" : "") + "music1.mp3";
-		music = new flash.media.Sound(new flash.net.URLRequest(murl));
+		//music = new flash.media.Sound(new flash.net.URLRequest(murl));
+		music = pazu.Assets.getSound("music1.mp3");
 		
 		monsters = [];
 		entities = [];
 		view = new SPR();
 		barsDelta = 0.;
-		output = new BMP(root.stage.stageWidth, root.stage.stageHeight);
+		output = new BMP(Const.GAME_WIDTH, Const.GAME_HEIGHT);
 		outputBMP = new flash.display.Bitmap(output);
 		root.addChild(outputBMP);
 		
@@ -142,6 +147,19 @@ using Common;
 			
 		updateUI();
 		updateWeb();
+		
+		root.addEventListener(flash.events.MouseEvent.MOUSE_DOWN, onMouseDown);
+		root.addEventListener(flash.events.MouseEvent.MOUSE_UP, onMouseUp);
+		root.mouseChildren = false;
+	}
+	
+	function onMouseDown(event:flash.events.MouseEvent) {
+		mouseIsDown = true;
+		mouseIsDownTime = flash.Lib.getTimer();
+	}
+	
+	function onMouseUp(_) {
+		mouseIsDown = false;
 	}
 	
 	function updateUI() {
@@ -273,7 +291,7 @@ using Common;
 		fmt.font = "BmpFont";
 		#else
 		fmt.font = pazu.Assets.getFont("gfx/04B_03__.TTF").fontName;
-		#end;
+		#end
 		fmt.size = size;
 		fmt.color = 0xFFFFFF;
 		tf.defaultTextFormat = fmt;
@@ -514,8 +532,8 @@ using Common;
 		}
 		
 		var z = scroll.curZ;
-		var tx = scroll.x - (root.stage.stageWidth / z) * 0.5;
-		var ty = scroll.y - (root.stage.stageHeight / z) * 0.5;
+		var tx = scroll.x - (Const.GAME_WIDTH / z) * 0.5;
+		var ty = scroll.y - (Const.GAME_HEIGHT / z) * 0.5;
 		var sx = Std.int(tx * z);
 		var sy = Std.int(ty * z);
 		if( !zooming ) {
@@ -531,6 +549,31 @@ using Common;
 		Popup.updateAll(dt);
 		Part.updateAll(dt);
 		
+		var tap = false;
+		
+		if (mouseIsDown) {
+			var dX = root.mouseX - (Const.GAME_WIDTH / 2);
+			var dY = root.mouseY - (Const.GAME_HEIGHT / 2);
+			if ( Math.abs (dX + dY) > 10 ) {
+				if ( Math.abs (dX) > Math.abs (dY) ) {
+					if ( dX < 0 ) {
+						dir = Direction.LEFT;
+					} else {
+						dir = Direction.RIGHT;
+					}
+				} else {
+					if ( dY < 0 ) {
+						dir = Direction.UP;
+					} else {
+						dir = Direction.DOWN;
+					}
+				}
+			}
+		} else {
+			dir = null;
+			tap = (flash.Lib.getTimer() - mouseIsDownTime < 180);
+		}
+		
 		if( hero.target == null && !hero.lock ) {
 			
 			for( c in world.chests )
@@ -541,19 +584,20 @@ using Common;
 					getChest(c.id,c.x,c.y);
 				}
 			hero.moving = false;
-			if( (Key.isDown(K.UP) || Key.isDown("Z".code) || Key.isDown("W".code)) && !props.bars )
+			if( (Key.isDown(K.UP) || Key.isDown("Z".code) || Key.isDown("W".code) || dir == Direction.UP) && !props.bars )
 				hero.move(0, -1, dt);
-			if( hero.target == null && (Key.isDown(K.DOWN) || Key.isDown("S".code)) && !props.bars )
+			if( hero.target == null && (Key.isDown(K.DOWN) || Key.isDown("S".code) || dir == Direction.DOWN) && !props.bars)
 				hero.move(0, 1, dt);
-			if( hero.target == null && (Key.isDown(K.LEFT) || Key.isDown("Q".code) || Key.isDown("A".code)) && props.left )
+			if( hero.target == null && (Key.isDown(K.LEFT) || Key.isDown("Q".code) || Key.isDown("A".code) || dir == Direction.LEFT) && props.left)
 				hero.move( -1, 0, dt);
-			if( hero.target == null && Key.isDown(K.RIGHT) || Key.isDown("D".code) )
+			if( hero.target == null && Key.isDown(K.RIGHT) || Key.isDown("D".code) || dir == Direction.RIGHT )
 				hero.move(1, 0, dt);
 		}
 		
 		if( hero.sword == null && !hero.lock ) {
-			if( (Key.isDown(K.SPACE) || Key.isDown(K.ENTER) || Key.isDown("E".code)) && props.weapons > 0 )
+			if( (Key.isDown(K.SPACE) || Key.isDown(K.ENTER) || Key.isDown("E".code) || tap) && props.weapons > 0 ) {
 				hero.attack();
+			}
 		}
 		
 		if( Key.isToggled(27) ) {
@@ -676,7 +720,7 @@ using Common;
 			#end
 		}
 		
-		#if !js
+		#if (!js && !mobile)
 		if( curColor.alpha > 0.01 )
 			output.draw(pixelFilter, null, new flash.geom.ColorTransform(1, 1, 1, curColor.alpha));
 		#end
@@ -747,30 +791,31 @@ using Common;
 			Entity.init();
 			var title = new Title(inst);
 		//}
-		
-		var widthScale = flash.Lib.current.stage.stageWidth / 600;
-		var heightScale = flash.Lib.current.stage.stageHeight / 408;
-		
-		if (widthScale < heightScale) {
-			
-			flash.Lib.current.scaleX = widthScale;
-			flash.Lib.current.scaleY = widthScale;
-			flash.Lib.current.x = (flash.Lib.current.stage.stageWidth - (600 * widthScale)) / 2;
-			
+		var xScale = flash.Lib.current.stage.stageWidth / Const.GAME_WIDTH;
+		var yScale = flash.Lib.current.stage.stageHeight / Const.GAME_HEIGHT;
+		if ( xScale < yScale ) {
+			flash.Lib.current.scaleX = xScale;
+			flash.Lib.current.scaleY = xScale;
+			flash.Lib.current.x = (flash.Lib.current.stage.stageWidth - (Const.GAME_WIDTH * xScale)) / 2;
+			flash.Lib.current.y = (flash.Lib.current.stage.stageHeight - (Const.GAME_HEIGHT * xScale)) / 2;
 		} else {
-			
-			flash.Lib.current.scaleX = heightScale;
-			flash.Lib.current.scaleY = heightScale;
-			flash.Lib.current.x = (flash.Lib.current.stage.stageWidth - (600 * heightScale)) / 2;
-			
+			flash.Lib.current.scaleX = yScale;
+			flash.Lib.current.scaleY = yScale;
+			flash.Lib.current.x = (flash.Lib.current.stage.stageWidth - (Const.GAME_WIDTH * yScale)) / 2;
+			flash.Lib.current.y = (flash.Lib.current.stage.stageHeight - (Const.GAME_HEIGHT * yScale)) / 2;
 		}
-		
 		var bars = new flash.display.Sprite();
-		bars.graphics.beginFill (0);
-		bars.graphics.drawRect ( -400, 0, 400, 408);
-		bars.graphics.drawRect (600, 0, 400, 408);
-		flash.Lib.current.addChild (bars);
-		
+		bars.graphics.beginFill(0);
+		bars.graphics.drawRect( -400, 0, 400, Const.GAME_HEIGHT);
+		bars.graphics.drawRect(Const.GAME_WIDTH, 0, 400, Const.GAME_HEIGHT);
+		flash.Lib.current.addChild(bars);
 	}
 	
+}
+
+enum Direction {
+	UP;
+	DOWN;
+	LEFT;
+	RIGHT;
 }
