@@ -19,8 +19,8 @@
     <class path="lib" />
     <class path="gfx" />
     <class path="sfx" />
-    <class path="C:\Development\Haxe\pazu\" />
-    <class path="bin\flash\haxe" />
+    <class path="C:\Development\Haxe\pazu/" />
+    <class path="bin/flash/haxe" />
   </classpaths>
   <!-- Build options -->
   <build>
@@ -28,7 +28,7 @@
     <option flashStrict="False" />
     <option mainClass="ApplicationMain" />
     <option enabledebug="False" />
-    <option additional="-swf-version 11" />
+    <option additional="-swf-lib obj\ld24Resources.swf&#xA;-swf-version 11" />
   </build>
   <!-- haxelib libraries -->
   <haxelib>

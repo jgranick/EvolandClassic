@@ -1,6 +1,6 @@
 using Common;
 
-//@:font("04B_03__.TTF", "a-Z0-9") class DefaultFont extends flash.text.Font {}
+@:font("04B_03__.TTF") class BmpFont extends flash.text.Font {}
 
 @:publicFields class Game {
 	
@@ -77,6 +77,7 @@ using Common;
 	
 	function new(root) {
 		this.root = root;
+		flash.text.Font.registerFont(BmpFont);
 		saveObj = flash.net.SharedObject.getLocal("ld24save");
 		try {
 			savedData = saveObj.data.save;
@@ -289,11 +290,7 @@ using Common;
 	function makeField(text,size=20) {
 		var tf = new TF();
 		var fmt = tf.defaultTextFormat;
-		#if flash
 		fmt.font = "BmpFont";
-		#else
-		fmt.font = pazu.Assets.getFont("gfx/04B_03__.TTF").fontName;
-		#end
 		fmt.size = size;
 		fmt.color = 0xFFFFFF;
 		tf.defaultTextFormat = fmt;

@@ -17,6 +17,5 @@
 	<haxelib name="pazu" />
 	
 	<assets path="music1.mp3" />
-	<assets path="gfx/04B_03__.TTF" />
 	
 </project>
