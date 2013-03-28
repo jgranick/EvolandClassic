@@ -292,11 +292,7 @@ using Common;
 	function makeField(text,size=20) {
 		var tf = new TF();
 		var fmt = tf.defaultTextFormat;
-		#if (flash || html5)
 		fmt.font = "BmpFont";
-		#else
-		fmt.font = "_sans";
-		#end
 		fmt.size = size;
 		fmt.color = 0xFFFFFF;
 		tf.defaultTextFormat = fmt;
