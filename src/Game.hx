@@ -79,7 +79,9 @@ using Common;
 	
 	function new(root) {
 		this.root = root;
+		#if !flash
 		flash.text.Font.registerFont(BmpFont);
+		#end
 		saveObj = flash.net.SharedObject.getLocal("ld24save");
 		try {
 			savedData = saveObj.data.save;
@@ -107,7 +109,7 @@ using Common;
 		entities = [];
 		view = new SPR();
 		barsDelta = 0.;
-		output = new BMP(Const.GAME_WIDTH, Const.GAME_HEIGHT);
+		output = new BMP(flash.Lib.current.stage.stageWidth, flash.Lib.current.stage.stageHeight);
 		outputBMP = new flash.display.Bitmap(output);
 		root.addChild(outputBMP);
 		
@@ -534,8 +536,8 @@ using Common;
 		}
 		
 		var z = scroll.curZ;
-		var tx = scroll.x - (Const.GAME_WIDTH / z) * 0.5;
-		var ty = scroll.y - (Const.GAME_HEIGHT / z) * 0.5;
+		var tx = scroll.x - (flash.Lib.current.stage.stageWidth / z) * 0.5;
+		var ty = scroll.y - (flash.Lib.current.stage.stageHeight / z) * 0.5;
 		var sx = Std.int(tx * z);
 		var sy = Std.int(ty * z);
 		if( !zooming ) {
@@ -793,24 +795,6 @@ using Common;
 			Entity.init();
 			var title = new Title(inst);
 		//}
-		var xScale = flash.Lib.current.stage.stageWidth / Const.GAME_WIDTH;
-		var yScale = flash.Lib.current.stage.stageHeight / Const.GAME_HEIGHT;
-		if ( xScale < yScale ) {
-			flash.Lib.current.scaleX = xScale;
-			flash.Lib.current.scaleY = xScale;
-			flash.Lib.current.x = (flash.Lib.current.stage.stageWidth - (Const.GAME_WIDTH * xScale)) / 2;
-			flash.Lib.current.y = (flash.Lib.current.stage.stageHeight - (Const.GAME_HEIGHT * xScale)) / 2;
-		} else {
-			flash.Lib.current.scaleX = yScale;
-			flash.Lib.current.scaleY = yScale;
-			flash.Lib.current.x = (flash.Lib.current.stage.stageWidth - (Const.GAME_WIDTH * yScale)) / 2;
-			flash.Lib.current.y = (flash.Lib.current.stage.stageHeight - (Const.GAME_HEIGHT * yScale)) / 2;
-		}
-		var bars = new flash.display.Sprite();
-		bars.graphics.beginFill(0);
-		bars.graphics.drawRect( -400, 0, 400, Const.GAME_HEIGHT);
-		bars.graphics.drawRect(Const.GAME_WIDTH, 0, 400, Const.GAME_HEIGHT);
-		flash.Lib.current.addChild(bars);
 	}
 	
 }

@@ -9,9 +9,6 @@ typedef K = flash.ui.Keyboard;
 @:publicFields class Const {
 
 	static inline var SIZE = 16;
-	
-	static inline var GAME_WIDTH = 600;
-	static inline var GAME_HEIGHT = 408;
 
 	static inline var PLAN_BG = 0;
 	
