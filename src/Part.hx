@@ -49,9 +49,6 @@ class Part {
 	}
 	
 	public static function explode( bmp : flash.display.BitmapData, px : Int, py : Int, proba = 100 ) {
-		#if js
-		return;
-		#end
 		if( bmp == null )
 			return;
 		for( x in 0...bmp.width )
