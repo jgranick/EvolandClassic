@@ -1,6 +1,6 @@
 using Common;
 
-#if !flash
+#if !flash // @:font is not working with the Haxe 3 builds in Flash right now
 @:font("C:\\Projects\\Games\\Evoland\\gfx\\04B_03__.TTF") class BmpFont extends flash.text.Font { }
 #end
 
@@ -79,7 +79,7 @@ using Common;
 	
 	function new(root) {
 		this.root = root;
-		#if !flash
+		#if !flash // @:font is not working with the Haxe 3 builds in Flash right now
 		flash.text.Font.registerFont(BmpFont);
 		#end
 		saveObj = flash.net.SharedObject.getLocal("ld24save");
@@ -306,7 +306,7 @@ using Common;
 		tf.autoSize = flash.text.TextFieldAutoSize.LEFT;
 		tf.width = 0;
 		tf.height = 20;
-		#if js
+		#if js // htmlText currently goes to DOM, which I believe is the wrong behavior, so need an htmlText parser
 		tf.text = text;
 		#else
 		tf.htmlText = text;
@@ -703,7 +703,7 @@ using Common;
 		} else
 			output.draw(view);
 		
-		#if !js
+		#if !js // Disabled for performance reasons, does work properly
 		var delta = Std.int(curColor.delta);
 		var mask = Math.ceil(curColor.mask);
 		if( delta != 0 || mask != 0xFF )
