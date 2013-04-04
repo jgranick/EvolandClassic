@@ -1,7 +1,7 @@
 using Common;
 
 #if !flash // @:font is not working with the Haxe 3 builds in Flash right now
-@:font("C:\\Projects\\Games\\Evoland\\gfx\\04B_03__.TTF") class BmpFont extends flash.text.Font { }
+@:font("04B_03__.TTF") class BmpFont extends flash.text.Font { }
 #end
 
 @:publicFields class Game {
