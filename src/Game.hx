@@ -1,8 +1,6 @@
 using Common;
 
-#if !flash // @:font is not working with the Haxe 3 builds in Flash right now
 @:font("04B_03__.TTF") class BmpFont extends flash.text.Font { }
-#end
 
 @:publicFields class Game {
 	
@@ -79,9 +77,7 @@ using Common;
 	
 	function new(root) {
 		this.root = root;
-		#if !flash // @:font is not working with the Haxe 3 builds in Flash right now
 		flash.text.Font.registerFont(BmpFont);
-		#end
 		saveObj = flash.net.SharedObject.getLocal("ld24save");
 		try {
 			savedData = saveObj.data.save;
