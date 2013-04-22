@@ -15,6 +15,7 @@ class Popup extends SPR {
 		super();
 		speed = 4;
 		wait = 0;
+		virtualY = 0;
 		all.push(this);
 	}
 	

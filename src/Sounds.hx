@@ -72,7 +72,11 @@ class Sounds {
 		if( s == null ) {
 			var cl = Type.resolveClass(name.charAt(0).toUpperCase() + name.substr(1));
 			if( cl == null ) throw "No sound " + name;
+			#if neko
+			s = Type.createInstance(cl, [ null, null, false ]);
+			#else
 			s = Type.createInstance(cl, []);
+			#end
 			sounds.set(name, s);
 		}
 		s.play();

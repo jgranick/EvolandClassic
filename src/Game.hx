@@ -77,6 +77,7 @@ using Common;
 	
 	function new(root) {
 		this.root = root;
+		mouseIsDownTime = 0;
 		flash.text.Font.registerFont(BmpFont);
 		saveObj = flash.net.SharedObject.getLocal("ld24save");
 		try {
@@ -290,7 +291,7 @@ using Common;
 	function makeField(text,size=20) {
 		var tf = new TF();
 		var fmt = tf.defaultTextFormat;
-		fmt.font = "BmpFont";
+		fmt.font = "04b03";
 		fmt.size = size;
 		fmt.color = 0xFFFFFF;
 		tf.defaultTextFormat = fmt;

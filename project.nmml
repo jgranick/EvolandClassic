@@ -11,8 +11,6 @@
 	<source path="gfx" />
 	<source path="sfx" />
 	
-	<haxeflag name="-swf-lib obj\ld24Resources.swf" if="flash" />
-	
 	<haxelib name="pazu" />
 	
 	<assets path="music1.mp3" />
