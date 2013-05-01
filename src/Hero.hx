@@ -29,7 +29,7 @@ class Hero extends Entity {
 				game.popup("Sorry I have nothing to say to you !", "that's what you get when talking to strangers",true);
 				return;
 			}
-			if( p.quests[0] == 0 || (p.quests[0] == 1 && p.gold == 0) ) {
+			if( p.quests.length == 0 || p.quests[0] == 0 || (p.quests[0] == 1 && p.gold == 0) ) {
 				game.popup("You want a <font color='#4040FF'>Quest</font> ?", "Bring me something shiny and I'll will help you",true);
 				p.quests[0] = 1;
 				return;
@@ -40,7 +40,7 @@ class Hero extends Entity {
 			}
 			game.popup("Thank you for your <font color='#4040FF'>gold coin</font> !", "You can now open doors with keys !",true);
 		case "59/31":
-			if( p.quests[1] == 0 ) {
+			if( p.quests.length < 2 || p.quests[1] == 0 ) {
 				p.quests[1] = 1;
 				Sounds.play("princess");
 				game.getChest(CPrincess, 0, 0);

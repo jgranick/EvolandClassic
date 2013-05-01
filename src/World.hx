@@ -149,11 +149,16 @@ class World {
 		removed[x][y] = true;
 		Game.props.rem.push(x + (y + (Game.props.dungeon?SIZE:0)) * SIZE);
 		Sounds.play("open");
-		//draw();
+		
+		#if html5
+		// much faster, slightly less accurate
 		details = false;
 		drawPos(x, y);
 		details = true;
 		drawPos(x, y);
+		#else
+		draw();
+		#end
 		
 		var b = removedBitmaps[x][y];
 		if( b != null )
