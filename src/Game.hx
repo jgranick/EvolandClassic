@@ -100,7 +100,7 @@ using Common;
 		purl.pop();
 		var murl = (purl.length > 0 ? purl.join("/") + "/" : "") + "music1.mp3";
 		//music = new flash.media.Sound(new flash.net.URLRequest(murl));
-		music = pazu.Assets.getSound("music1.mp3");
+		music = openfl.Assets.getSound("music1.mp3");
 		
 		monsters = [];
 		entities = [];

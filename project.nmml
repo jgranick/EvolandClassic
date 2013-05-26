@@ -11,7 +11,7 @@
 	<source path="gfx" />
 	<source path="sfx" />
 	
-	<haxelib name="pazu" />
+	<haxelib name="openfl" />
 	
 	<assets path="music1.mp3" />
 	
