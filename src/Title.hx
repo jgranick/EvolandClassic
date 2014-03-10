@@ -43,12 +43,24 @@ class Title {
 		var bmp = new flash.display.Bitmap(new TitlePNG(0, 0));
 		root.addChild(bmp);
 		
+		#if html5
+		layer2 = new flash.display.Bitmap(new Title2PNG(0, 0, true, 0, function (b) {
+			b.floodFill(0, 0, 0);
+		}));
+		#else
 		layer2 = new flash.display.Bitmap(new Title2PNG(0, 0, true, 0));
 		layer2.bitmapData.floodFill(0, 0, 0);
+		#end
 		root.addChild(layer2);
-
+		
+		#if html5
+		layer3 = new flash.display.Bitmap(new Title3PNG(0, 0, true, 0, function (b) {
+			b.floodFill(0, 0, 0);
+		}));
+		#else
 		layer3 = new flash.display.Bitmap(new Title3PNG(0, 0, true, 0));
 		layer3.bitmapData.floodFill(0, 0, 0);
+		#end
 		root.addChild(layer3);
 		
 		var start = game.makeField("Start", 15);
