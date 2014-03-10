@@ -789,8 +789,16 @@ using Common;
 		var url = inst.root.loaderInfo.url;
 		//if( StringTools.startsWith(url, "http://evoland.shirogames.com/") || StringTools.startsWith(url, "http://evoland.shiro.fr/") || StringTools.startsWith(url, "file://") ) {
 			Key.init();
-			Entity.init();
+			#if html5
+			Entity.init(function () {
+				
+				var title = new Title(inst);
+			
+			});
+			#else
+			Entity.init ();
 			var title = new Title(inst);
+			#end
 		//}
 	}
 	

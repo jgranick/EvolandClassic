@@ -95,9 +95,18 @@ class Entity
 		Part.explode(bmp.bitmapData, Std.int(mc.x), Std.int(mc.y), p);
 	}
 	
-	public static function init() {
+	public static function init(?onComplete:Void->Void) {
 		if ( sprites == null ) {
+			#if html5
+			new SpritesPNG (0, 0, true, 0xFFFFFFFF, function (b) {
+				
+				sprites = Tiles.initTiles (b, 16);
+				onComplete ();
+				
+			});
+			#else
 			sprites = Tiles.initTiles(new SpritesPNG(0, 0), 16);
+			#end
 		}
 	}
 	
