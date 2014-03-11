@@ -1,15 +1,6 @@
 import flash.geom.Rectangle;
 using Common;
 
-@:bitmap("world.png") class WorldPNG extends BMP {
-}
-
-@:bitmap("dungeon.png") class DungeonPNG extends BMP {
-}
-
-@:bitmap("tiles.png") class TilesPNG extends BMP {
-}
-
 enum Block {
 	Dark;
 	Field;
@@ -95,7 +86,7 @@ class World {
 	}
 	
 	function initTiles() {
-		tiles = Tiles.initTiles(new TilesPNG(0, 0), Const.SIZE);
+		tiles = Tiles.initTiles(openfl.Assets.getBitmapData ("tiles_alpha.png"), Const.SIZE);
 	}
 	
 	public function collide(x, y) {
@@ -285,7 +276,8 @@ class World {
 	function put(x, y, b:BMP) {
 		pt.x = x;
 		pt.y = y;
-		bmp.copyPixels(b, b.rect, pt, b, p0, true);
+		bmp.copyPixels(b, b.rect, pt, null, null, true);
+		//bmp.copyPixels(b, b.rect, pt, b, p0, true);
 	}
 	
 	function decodeColor( bmp : BMP, x, y ) {

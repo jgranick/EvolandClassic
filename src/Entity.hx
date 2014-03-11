@@ -2,10 +2,6 @@ using Common;
 
 import flash.display.BitmapData;
 
-@:bitmap("sprites.png")
-class SpritesPNG extends BMP {
-}
-
 enum EKind {
 	NPC;
 	Chest;
@@ -97,16 +93,7 @@ class Entity
 	
 	public static function init(?onComplete:Void->Void) {
 		if ( sprites == null ) {
-			#if html5
-			new SpritesPNG (0, 0, true, 0xFFFFFFFF, function (b) {
-				
-				sprites = Tiles.initTiles (b, 16);
-				onComplete ();
-				
-			});
-			#else
-			sprites = Tiles.initTiles(new SpritesPNG(0, 0), 16);
-			#end
+			sprites = Tiles.initTiles(openfl.Assets.getBitmapData ("sprites_alpha.png"), 16);
 		}
 	}
 	

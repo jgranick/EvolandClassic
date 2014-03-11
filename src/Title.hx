@@ -1,14 +1,5 @@
 using Common;
 
-@:bitmap("title.png") class TitlePNG extends BMP {
-}
-
-@:bitmap("title2.png") class Title2PNG extends BMP {
-}
-
-@:bitmap("title3.png") class Title3PNG extends BMP {
-}
-
 class Title {
 
 	var game : Game;
@@ -40,27 +31,15 @@ class Title {
 			}
 		});
 		
-		var bmp = new flash.display.Bitmap(new TitlePNG(0, 0));
+		var bmp = new flash.display.Bitmap(openfl.Assets.getBitmapData ("title.png"));
 		root.addChild(bmp);
 		
-		#if html5
-		layer2 = new flash.display.Bitmap(new Title2PNG(0, 0, true, 0, function (b) {
-			b.floodFill(0, 0, 0);
-		}));
-		#else
-		layer2 = new flash.display.Bitmap(new Title2PNG(0, 0, true, 0));
+		layer2 = new flash.display.Bitmap(openfl.Assets.getBitmapData ("title2.png"));
 		layer2.bitmapData.floodFill(0, 0, 0);
-		#end
 		root.addChild(layer2);
 		
-		#if html5
-		layer3 = new flash.display.Bitmap(new Title3PNG(0, 0, true, 0, function (b) {
-			b.floodFill(0, 0, 0);
-		}));
-		#else
-		layer3 = new flash.display.Bitmap(new Title3PNG(0, 0, true, 0));
+		layer3 = new flash.display.Bitmap(openfl.Assets.getBitmapData ("title3.png"));
 		layer3.bitmapData.floodFill(0, 0, 0);
-		#end
 		root.addChild(layer3);
 		
 		var start = game.makeField("Start", 15);

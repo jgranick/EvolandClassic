@@ -113,7 +113,7 @@ using Common;
 		initPixelFilter(props.zoom);
 		root.addChild(pixelFilterBMP);
 		
-		world = new World(new World.WorldPNG(0, 0));
+		world = new World(openfl.Assets.getBitmapData ("world.png"));
 		realWorld = world;
 				
 		for( r in props.rem )
@@ -208,7 +208,7 @@ using Common;
 			}
 		
 		if( v ) {
-			world = new World(new World.DungeonPNG(0, 0));
+			world = new World(openfl.Assets.getBitmapData ("dungeon.png"));
 			for( r in props.rem ) {
 				var y = Std.int(r / World.SIZE);
 				if( y >= World.SIZE )
@@ -508,7 +508,7 @@ using Common;
 				p.y = 0;
 				root.addChild(p);
 				
-				var dun = new World(new World.DungeonPNG(0, 0));
+				var dun = new World(openfl.Assets.getBitmapData ("dungeon.png"));
 				var gold = 0, total = 0;
 				for( c in world.chests.concat(dun.chests) ) {
 					switch( c.id ) {
@@ -789,16 +789,8 @@ using Common;
 		var url = inst.root.loaderInfo.url;
 		//if( StringTools.startsWith(url, "http://evoland.shirogames.com/") || StringTools.startsWith(url, "http://evoland.shiro.fr/") || StringTools.startsWith(url, "file://") ) {
 			Key.init();
-			#if html5
-			Entity.init(function () {
-				
-				var title = new Title(inst);
-			
-			});
-			#else
 			Entity.init ();
 			var title = new Title(inst);
-			#end
 		//}
 	}
 	

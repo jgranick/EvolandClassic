@@ -14,5 +14,6 @@
 	<haxelib name="openfl" />
 	
 	<assets path="music1.mp3" />
+	<assets path="gfx" rename="" include="*.png" />
 	
 </project>
