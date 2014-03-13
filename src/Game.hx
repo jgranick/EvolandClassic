@@ -152,8 +152,8 @@ using Common;
 		updateUI();
 		updateWeb();
 		
-		root.addEventListener(flash.events.MouseEvent.MOUSE_DOWN, onMouseDown);
-		root.addEventListener(flash.events.MouseEvent.MOUSE_UP, onMouseUp);
+		flash.Lib.current.stage.addEventListener(flash.events.MouseEvent.MOUSE_DOWN, onMouseDown);
+		flash.Lib.current.stage.addEventListener(flash.events.MouseEvent.MOUSE_UP, onMouseUp);
 		root.mouseChildren = false;
 	}
 	
@@ -706,7 +706,8 @@ using Common;
 		if( delta != 0 || mask != 0xFF )
 			applyMask(delta, mask);
 		#end
-
+		
+		#if !js // Runs well on desktop, but too slow for mobile
 		if( curColor.rgb > 0.01 ) {
 			var r = 155;
 			var g = 198;
@@ -721,6 +722,7 @@ using Common;
 			]);
 			output.applyFilter(output, output.rect, new flash.geom.Point(0, 0), curFilter);
 		}
+		#end
 		
 		//if( curColor.alpha > 0.01 )
 			//output.draw(pixelFilter, null, new flash.geom.ColorTransform(1, 1, 1, curColor.alpha));
