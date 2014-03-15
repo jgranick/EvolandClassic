@@ -8,64 +8,10 @@
 	
 	<title>Evoland Classic</title>
 	
-	<!-- <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" /> -->
-	<meta name="apple-mobile-web-app-capable" content="yes">
-	
-	<style>
-		html,body { margin: 0; padding: 0; height: 100%; overflow: hidden; }
-		#openfl-embed { background: #000000; width: 100%; height: 100%; }
-	</style>
-	
-	<script>
-		window.addEventListener ("touchmove", function (event) { event.preventDefault (); }, false);
-		
-		var meta = document.createElement ("meta");
-		meta.setAttribute ('name', 'viewport');
-		
-		if (typeof window.devicePixelRatio != 'undefined') {
-			
-			meta.setAttribute ('content', 'width=device-width, initial-scale=' + (1 / window.devicePixelRatio) + ', user-scalable=no');
-			
-		} else {
-			
-			meta.setAttribute ('content', 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no');
-			
-		}
-	</script>
-	
+	<link rel="stylesheet" type="text/css" href="stylesheet.css">
 </head>
 <body style="background-color : #000000; color : #eef">
 	
-	<style type="text/css">
-		@font-face {
-			font-family: 'webfont-04b03';
-			src: url('fonts/04b_03__-webfont.eot');
-			src: url('fonts/04b_03__-webfont.eot?#iefix') format('embedded-opentype'),
-			url('fonts/04b_03__-webfont.woff') format('woff'),
-			url('fonts/04b_03__-webfont.ttf') format('truetype'),
-			url('fonts/04b_03__-webfont.svg#04b03regular') format('svg');
-			font-weight: normal;
-			font-style: normal;
-		}
-		a {
-			color : #c77;
-		}
-		#social {
-			margin-top : 5px;
-		}
-		#social a {
-			font-weight : bold;
-			font-size : 20px;
-			color : white;
-			text-decoration : none;
-			margin-left : 30px;
-		}
-		#social img {
-			border : 0;
-			vertical-align : -10px;
-		}
-	</style>
-
 	<center>
 		<div style="position : relative; width : 600px">
 
@@ -76,8 +22,8 @@
 		</div>
 
 		<div style="border : 1px solid #778; width:600px; height: 408px">
-
-			<div id="openfl-embed" style="position: relative;" />
+			
+			<div id="openfl-embed" style="position: relative; width: 600px; height: 408px;" />
 			
 		</div>
 
@@ -95,6 +41,16 @@
 		</p>
 
 	</center>
+	
+	<script type="text/javascript">
+		function show(e,f) {
+			try {
+				document.getElementById(e).style.display = f ? "":"none";
+			} catch( error ) {
+				console.log(e);
+			}
+		}
+	</script>
 	
 	::if DEFINE_STATS::<script src="./stats.min.js"></script>::end::
 	<script type="text/javascript" src="./::APP_FILE::.js"></script>

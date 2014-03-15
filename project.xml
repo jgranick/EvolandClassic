@@ -17,5 +17,7 @@
 	<assets path="gfx" rename="" include="*.png" />
 	
 	<template path="templates" />
+	<haxeflag name="-dce" value="full" if="html5" />
+	<haxedef name="js-flatten" if="html5" />
 	
 </project>

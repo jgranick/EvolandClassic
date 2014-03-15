@@ -706,6 +706,8 @@ using Common;
 		
 		#if js
 		
+		// Use a faster, single filter for better HTML5 performance
+		
 		var delta = Std.int(curColor.delta);
 		var mask = Math.ceil(curColor.mask);
 		var colorMatrix = null;
@@ -732,6 +734,8 @@ using Common;
 		}
 		
 		#else
+		
+		// Original behavior
 		
 		var delta = Std.int(curColor.delta);
 		var mask = Math.ceil(curColor.mask);
@@ -817,7 +821,7 @@ using Common;
 	}
 	
 	public static var inst : Game;
-	static function main() {
+	@:keep static function main() {
 		inst = new Game(flash.Lib.current);
 		inst.root.addEventListener(flash.events.Event.ENTER_FRAME, function(_) inst.update());
 		var url = inst.root.loaderInfo.url;

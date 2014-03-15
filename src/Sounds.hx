@@ -2,63 +2,63 @@
 typedef S = flash.media.Sound;
 
 @:sound("kill.wav")
-class Kill extends S {
+@:keep class Kill extends S {
 }
 
 @:sound("walk.wav")
-class Walk extends S {
+@:keep class Walk extends S {
 }
 
 @:sound("sword.wav")
-class Sword extends S {
+@:keep class Sword extends S {
 }
 
 @:sound("notsure.wav")
-class Chest extends S {
+@:keep class Chest extends S {
 }
 
 @:sound("pii.wav")
-class Menu extends S {
+@:keep class Menu extends S {
 }
 
 @:sound("fireball.wav")
-class Fireball extends S {
+@:keep class Fireball extends S {
 }
 
 @:sound("world_remove.wav")
-class Open extends S {
+@:keep class Open extends S {
 }
 
 @:sound("save.wav")
-class Save extends S {
+@:keep class Save extends S {
 }
 
 @:sound("gameover.wav")
-class GameOver extends S {
+@:keep class GameOver extends S {
 }
 
 @:sound("firehit.wav")
-class FireHit extends S {
+@:keep class FireHit extends S {
 }
 
 @:sound("npc.wav")
-class Npc extends S {
+@:keep class Npc extends S {
 }
 
 @:sound("princess.wav")
-class Princess extends S {
+@:keep class Princess extends S {
 }
 
 @:sound("puzzle.wav")
-class Puzzle extends S {
+@:keep class Puzzle extends S {
 }
 
 @:sound("levelup.wav")
-class Levelup extends S {
+@:keep class Levelup extends S {
 }
 
 @:sound("hit.wav")
-class Hit extends S {
+@:keep class Hit extends S {
 }
 
 class Sounds {
