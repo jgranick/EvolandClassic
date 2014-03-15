@@ -1,6 +1,8 @@
 using Common;
 
+#if !js
 @:font("04B_03__.TTF") class BmpFont extends flash.text.Font { }
+#end
 
 @:publicFields class Game {
 	
@@ -78,7 +80,9 @@ using Common;
 	function new(root) {
 		this.root = root;
 		mouseIsDownTime = 0;
+		#if !js
 		flash.text.Font.registerFont(BmpFont);
+		#end
 		saveObj = flash.net.SharedObject.getLocal("ld24save");
 		try {
 			savedData = saveObj.data.save;
@@ -291,7 +295,11 @@ using Common;
 	function makeField(text,size=20) {
 		var tf = new TF();
 		var fmt = tf.defaultTextFormat;
+		#if js
+		fmt.font = "webfont-04b03"; // some browsers don't like a font that starts with a number
+		#else
 		fmt.font = "04b03";
+		#end
 		fmt.size = size;
 		fmt.color = 0xFFFFFF;
 		tf.defaultTextFormat = fmt;
@@ -303,11 +311,7 @@ using Common;
 		tf.autoSize = flash.text.TextFieldAutoSize.LEFT;
 		tf.width = 0;
 		tf.height = 20;
-		#if js // htmlText currently goes to DOM, which I believe is the wrong behavior, so need an htmlText parser
-		tf.text = text;
-		#else
 		tf.htmlText = text;
-		#end
 		return tf;
 	}
 	
@@ -700,14 +704,41 @@ using Common;
 		} else
 			output.draw(view);
 		
-		#if !js // Disabled for performance reasons, does work properly
+		#if js
+		
 		var delta = Std.int(curColor.delta);
 		var mask = Math.ceil(curColor.mask);
-		if( delta != 0 || mask != 0xFF )
-			applyMask(delta, mask);
-		#end
+		var colorMatrix = null;
 		
-		#if !js // Runs well on desktop, but too slow for mobile
+		if( curColor.rgb > 0.01 ) {
+			var r = 155;
+			var g = 198;
+			var b = 15;
+			var f = (0.25 / g) * curColor.rgb;
+			var k = 1 - curColor.rgb;
+			colorMatrix = [
+				k + r*f, r*f, r*f, 0, 20 * curColor.rgb,
+				g*f, k + g*f, g*f, 0, 50 * curColor.rgb,
+				b*f, b*f, k + b*f, 0, 20 * curColor.rgb,
+				0,0,0,1,0,
+			];
+		}
+		
+		if (delta != 0 || mask != 0xFF && colorMatrix != null) {
+			
+			var curFilter = new CombinedFilter (delta, mask, colorMatrix);
+			output.applyFilter (output, output.rect, new flash.geom.Point(0, 0), curFilter);
+			
+		}
+		
+		#else
+		
+		var delta = Std.int(curColor.delta);
+		var mask = Math.ceil(curColor.mask);
+		if( delta != 0 || mask != 0xFF ) {
+			applyMask(delta, mask);
+		}
+		
 		if( curColor.rgb > 0.01 ) {
 			var r = 155;
 			var g = 198;
@@ -722,6 +753,7 @@ using Common;
 			]);
 			output.applyFilter(output, output.rect, new flash.geom.Point(0, 0), curFilter);
 		}
+		
 		#end
 		
 		//if( curColor.alpha > 0.01 )
@@ -804,3 +836,99 @@ enum Direction {
 	LEFT;
 	RIGHT;
 }
+
+
+#if js
+
+class CombinedFilter extends flash.filters.BitmapFilter {
+	
+	
+	public var delta:Int;
+	public var mask:Int;
+	public var matrix:Array<Float>;
+	
+	
+	public function new (delta:Int, mask:Int, matrix:Array<Float>) {
+		
+		this.delta = delta;
+		this.mask = mask;
+		this.matrix = matrix;
+		
+		super ();
+		
+	}
+	
+	
+	public override function __applyFilter (sourceData:js.html.ImageData, targetData:js.html.ImageData, sourceRect:flash.geom.Rectangle, destPoint:flash.geom.Point):Void {
+		
+		var source = sourceData.data;
+		var target = targetData.data;
+		
+		var offsetX = Std.int (destPoint.x - sourceRect.x);
+		var offsetY = Std.int (destPoint.y - sourceRect.y);
+		var sourceStride = sourceData.width * 4;
+		var targetStride = targetData.width * 4;
+		
+		var sourceOffset:Int;
+		var targetOffset:Int;
+		
+		var applyMask = (delta != 0 || mask != 0xFF);
+		var applyMatrix = (matrix != null);
+		
+		var r:Int, g:Int, b:Int, a:Int;
+		
+		for (row in Std.int (sourceRect.y)...Std.int (sourceRect.height)) {
+			
+			for (column in Std.int (sourceRect.x)...Std.int (sourceRect.width)) {
+				
+				sourceOffset = (row * sourceStride) + (column * 4);
+				targetOffset = ((row + offsetX) * targetStride) + ((column + offsetY) * 4);
+				
+				r = source[sourceOffset];
+				g = source[sourceOffset + 1];
+				b = source[sourceOffset + 2];
+				a = source[sourceOffset + 3];
+				
+				if (applyMask) {
+					
+					r += delta;
+					g += delta;
+					b += delta;
+					a += delta;
+					if (r > 0xFF) r = 0xFF;
+					if (g > 0xFF) g = 0xFF;
+					if (b > 0xFF) b = 0xFF;
+					if (a > 0xFF) a = 0xFF;
+					r = r & mask;
+					g = g & mask;
+					b = b & mask;
+					a = a & mask;
+					
+				}
+				
+				if (applyMatrix) {
+					
+					target[targetOffset] = Std.int ((matrix[0]  * r) + (matrix[1]  * g) + (matrix[2]  * b) + (matrix[3]  * a) + matrix[4]);
+					target[targetOffset + 1] = Std.int ((matrix[5]  * r) + (matrix[6]  * g) + (matrix[7]  * b) + (matrix[8]  * a) + matrix[9]);
+					target[targetOffset + 2] = Std.int ((matrix[10] * r) + (matrix[11] * g) + (matrix[12] * b) + (matrix[13] * a) + matrix[14]);
+					target[targetOffset + 3] = Std.int ((matrix[15] * r) + (matrix[16] * g) + (matrix[17] * b) + (matrix[18] * a) + matrix[19]);
+					
+				} else {
+					
+					target[targetOffset] = r;
+					target[targetOffset + 1] = g;
+					target[targetOffset + 2] = b;
+					target[targetOffset + 3] = a;
+					
+				}
+				
+			}
+			
+		}
+		
+	}
+	
+	
+}
+
+#end
