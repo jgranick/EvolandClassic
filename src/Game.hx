@@ -40,6 +40,8 @@ using Common;
 	var mouseIsDown : Bool;
 	var mouseIsDownTime : Int;
 	
+	var disableFilter : Bool;
+	
 	static var has = {
 		monsters : false,
 		npc : false,
@@ -615,6 +617,10 @@ using Common;
 				js("document.location.reload()");
 			}
 		}
+		
+		if (Key.isToggled ("F".code)) {
+			disableFilter = !disableFilter;
+		}
 
 		// cheat code
 		if( Key.isToggled("S".code) && Key.isDown(K.CONTROL) )
@@ -726,7 +732,7 @@ using Common;
 			];
 		}
 		
-		if (delta != 0 || mask != 0xFF && colorMatrix != null) {
+		if (!disableFilter && (delta != 0 || mask != 0xFF || colorMatrix != null)) {
 			
 			var curFilter = new CombinedFilter (delta, mask, colorMatrix);
 			output.applyFilter (output, output.rect, new flash.geom.Point(0, 0), curFilter);
