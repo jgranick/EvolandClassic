@@ -13,8 +13,11 @@
 	
 	<haxelib name="openfl" />
 	
-	<assets path="music1.mp3" />
+	<assets path="music1.mp3" type="music" />
+	<assets path="music1.ogg" type="music" if="html5"/>
+	<assets path="music1.wav" type="music" if="html5"/>
 	<assets path="gfx" rename="" include="*.png" />
+	<assets path="sfx" include="*.mp3|*.ogg|*.wav" if="html5" />
 	
 	<template path="templates" />
 	<haxeflag name="-dce" value="full" if="html5" />

@@ -106,7 +106,7 @@ using Common;
 		purl.pop();
 		var murl = (purl.length > 0 ? purl.join("/") + "/" : "") + "music1.mp3";
 		//music = new flash.media.Sound(new flash.net.URLRequest(murl));
-		music = openfl.Assets.getSound("music1.mp3");
+		music = openfl.Assets.getMusic("music1.mp3");
 		
 		monsters = [];
 		entities = [];
@@ -158,9 +158,12 @@ using Common;
 		updateUI();
 		updateWeb();
 		
+		#if !js
+		// The game is designed for desktop use, the filters are too heavy for mobile right now
 		flash.Lib.current.stage.addEventListener(flash.events.MouseEvent.MOUSE_DOWN, onMouseDown);
 		flash.Lib.current.stage.addEventListener(flash.events.MouseEvent.MOUSE_UP, onMouseUp);
 		root.mouseChildren = false;
+		#end
 	}
 	
 	function onMouseDown(event:flash.events.MouseEvent) {

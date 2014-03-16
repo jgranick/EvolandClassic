@@ -1,6 +1,8 @@
 
 typedef S = flash.media.Sound;
 
+#if !html5
+
 @:sound("kill.wav")
 @:keep class Kill extends S {
 }
@@ -61,6 +63,9 @@ typedef S = flash.media.Sound;
 @:keep class Hit extends S {
 }
 
+#end
+
+
 class Sounds {
 	
 	static var sounds = new Map();
@@ -70,9 +75,19 @@ class Sounds {
 			return;
 		var s : S = sounds.get(name);
 		if( s == null ) {
+			#if !html5
 			var cl = Type.resolveClass(name.charAt(0).toUpperCase() + name.substr(1));
 			if( cl == null ) throw "No sound " + name;
 			s = Type.createInstance(cl, []);
+			#else
+			name = switch (name) {
+				case "chest": "notsure";
+				case "menu": "pii";
+				case "open": "world_remove";
+				default: name.toLowerCase ();
+			}
+			s = openfl.Assets.getSound("sfx/" + name + ".wav");
+			#end
 			sounds.set(name, s);
 		}
 		s.play();
