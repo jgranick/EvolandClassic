@@ -468,7 +468,8 @@ using Common;
 	}
 	
 	function updateWeb() {
-		var parts = ["banner", "author", "social"];
+		//var parts = ["banner", "author", "social"];
+		var parts = ["banner", "social"];
 		for( i in 0...parts.length )
 			js("show('" + parts[i] + "'," + (i < props.web) + ")");
 		if( props.porn )
