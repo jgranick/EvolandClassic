@@ -34,6 +34,24 @@ class Title {
 		var bmp = new flash.display.Bitmap(openfl.Assets.getBitmapData ("title.png"));
 		root.addChild(bmp);
 		
+		#if flash
+		// Force transparency
+		var title2 = openfl.Assets.getBitmapData("title2.png");
+		var data = new flash.display.BitmapData(title2.width, title2.height, true, 0);
+		data.copyPixels(title2, title2.rect, new flash.geom.Point ());
+		data.floodFill(0, 0, 0);
+		title2 = data;
+		layer2 = new flash.display.Bitmap(title2);
+		root.addChild(layer2);
+		
+		var title3 = openfl.Assets.getBitmapData("title3.png");
+		var data = new flash.display.BitmapData(title3.width, title3.height, true, 0);
+		data.copyPixels(title3, title3.rect, new flash.geom.Point ());
+		data.floodFill(0, 0, 0);
+		title3 = data;
+		layer3 = new flash.display.Bitmap(title3);
+		root.addChild(layer3);
+		#else
 		layer2 = new flash.display.Bitmap(openfl.Assets.getBitmapData ("title2.png"));
 		layer2.bitmapData.floodFill(0, 0, 0);
 		root.addChild(layer2);
@@ -41,6 +59,7 @@ class Title {
 		layer3 = new flash.display.Bitmap(openfl.Assets.getBitmapData ("title3.png"));
 		layer3.bitmapData.floodFill(0, 0, 0);
 		root.addChild(layer3);
+		#end
 		
 		var start = game.makeField("Start", 15);
 		start.x = 120;
