@@ -104,9 +104,10 @@ using Common;
 		
 		var purl = root.loaderInfo.url.split("/");
 		purl.pop();
-		var murl = (purl.length > 0 ? purl.join("/") + "/" : "") + "music1.mp3";
+		var f = #if flash "music1.mp3" #else "music1.ogg" #end
+		var murl = (purl.length > 0 ? purl.join("/") + "/" : "") + f;
 		//music = new flash.media.Sound(new flash.net.URLRequest(murl));
-		music = openfl.Assets.getMusic("music1.mp3");
+		music = openfl.Assets.getMusic(f);
 		
 		monsters = [];
 		entities = [];
