@@ -10,6 +10,10 @@
 	
 	<link rel="stylesheet" type="text/css" href="stylesheet.css">
 	
+	::if linkedLibraries::::foreach (linkedLibraries)::
+	<script type="text/javascript" src="::__current__::"></script>::end::::end::
+	<script type="text/javascript" src="./::APP_FILE::.js"></script>
+	
 </head>
 <body style="background-color: #000000; color: #eef">
 	
@@ -25,7 +29,7 @@
 			
 		</div>
 		
-		<div style="border : 1px solid #778;">
+		<div style="border : 1px solid #778; width: 600px">
 			
 			<div id="openfl-embed" style="position: relative; width: 600px; height: 408px;" />
 			
@@ -60,9 +64,9 @@
 		
 	</script>
 	
-	::if DEFINE_STATS::<script type="text/javascript" src="./stats.min.js"></script>::end::
-	<script type="text/javascript" src="./soundjs.min.js"></script>
-	<script type="text/javascript" src="./::APP_FILE::.js"></script>
+	<script type="text/javascript">
+		openfl.embed ("openfl-embed", ::WIN_WIDTH::, ::WIN_HEIGHT::, "::WIN_FLASHBACKGROUND::");
+	</script>
 	
 </body>
 </html>
