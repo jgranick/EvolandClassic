@@ -45,7 +45,7 @@ class World {
 	public var npcs : Array < { x:Int, y:Int, e:Entity }>;
 	
 	public var bmp : BMP;
-	public var tiles : Array<Array<BMP>>;
+	public static var tiles : Array<Array<BMP>>;
 	public var removed : Array<Array<Bool>>;
 	var removedBitmaps : Array<Array<BMP>>;
 	
@@ -86,7 +86,9 @@ class World {
 	}
 	
 	function initTiles() {
-		tiles = Tiles.initTiles(openfl.Assets.getBitmapData ("tiles_alpha.png"), Const.SIZE);
+		if (tiles == null) {
+			tiles = Tiles.initTiles(openfl.Assets.getBitmapData ("tiles_alpha.png"), Const.SIZE);
+		}
 	}
 	
 	public function collide(x, y) {
